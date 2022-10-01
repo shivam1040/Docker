@@ -1,0 +1,13 @@
+version: '3'
+#defining containers along with its custom name
+services:
+  redis-server:
+    image: 'redis'
+  node-app:
+  #defining restart policy when crash of this service
+    restart: always
+  #this build means that container for this should be created locally referring to Dockerfile in curr dir
+    build: .
+    #mapping system port 8081 to container port 8081
+    ports:
+      - "8081:8081"

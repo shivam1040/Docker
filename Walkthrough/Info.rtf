@@ -1,0 +1,105 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2638
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\froman\fcharset0 Times-Roman;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww14140\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Container is process and instance of docker image having its own I/O isolated grouping of resources-cpu, men, storage etc.\
+\
+docker run hello-world, this cmd creates and starts an image named hello-world\
+\
+Namespacing and control groups for io resource management is specific to linux\
+\
+docker run busybox echo hi there -a, this cmd will create an instance of image busy box and run echo hi there in terminal of busy box, a way to override startup commands, -a tag displays output/process to\
+\
+Overriding startup cmd wont\'92t work in above if those commands aren\'92t present as executable in the snapshot of the image, refer to 12th image\
+\
+docker ps, this command displays list of running containers\
+\
+docker ps -all, lists the history of create/shutdown/deleted containers\
+\
+Docker run cmd is combination of docker create and docker start   \
+\
+docker create <image> -a, creates an image, basically fs snapshot will be prepped in the docker vm environment/hard drive and -a tag enables docker to watch for the output\
+\
+docker start <containerId>, starts a container , basically executes the startup command\
+\
+Docker lifecycle consists majorly of creating containers from image(includes overrides default cmd/parameters if any) and starting the containers using id of aforementioned created containers, runs the attached default/overriden cmd, after execution the container stops. \
+\
+Once a container is created with overriden commands we can\'92t start the container with different overriden/default commands\
+\
+docker system prune, removes all unattached/stopped containers\
+\
+docker logs <container-id>, displays all the emitted logs of container\
+\
+docker stop <container-id>, stops a container by sending sigterm signal and gives 10 seconds to it, after 10 seconds docker kill is executed\
+\
+docker kill <container-id>, force kills a container by sending sigkill\
+\
+docker exec -it <container-id> <command>, this cmd enables user to run a command inside docker container(running) it could be related to the image, it tag allows us to execute commands inside a container, connects to stdin and outputs using stdout, same as -i -t \
+\
+Every linux has three channels attach to it for I/O, stdin, stdout and stderr\
+\
+docker exec -it <container-id> sh, this cmd gives access to container\'92s sh terminal basically linux environment inside the container, use ctrl+d to exit session, one can use bash, zsh etc. shells too\
+\
+docker run -it <image-name> sh, this cmd creates and starts image and displays sh terminal/shell, remember this will override execution of any default cmd predefined in image\
+\
+docker image ls, this cmd list all images in cache\
+\
+docker stop $(docker ps -a -q), stops all running containers\
+\
+docker build ., this cmd executes Dockerfile in the current directory and creates an image and . refers to  build context it is essentially set of files and folders belonging to project that should be used to make image/wrapped int the container\
+\
+docker build -t customName/CustomRepoName:version <directory to user for build/dockerfile dir>, cmd to create a custom image by specifying tag/repo/version, this process is also called tagging an image\
+\
+docker run customimage/customrepo:version, will run the image as specified in above format\
+\
+docker run -it alpine sh, this cmd runs a container having alpine  as base image in sh shell\
+\
+docker commit -c 'CMD ["redis-server"]' <container-id>, cmd to create an image out of running/saved container instance, CMD[red\'85] is to add default/startup cmd to this new image\
+\
+* in package.json of web app means any version and start means the startup cmd\
+\
+By default all the files inside dockerfile dir aren\'92t available to container/docker\
+\
+By default incoming requests at any port to container is not allowed, hence port mapping is necessary\
+\
+docker run -p portLocal:portContainer <image id/name>, this cmd maps local request on port 8080 to container\'92s port 8080\
+\
+Docker CLI can be used to connect two containers but better way is docker compose\
+\
+Services inside docker compose are automatically run on the same network, hence no need to manually configure\
+\
+Services in docker compose are nothing but information related to containers\
+\
+docker-compose up, cmd to run containers using docker compose, just like docker run\
+\
+docker-compose up --build, cmd to build containers from docker compose yml and run them too\
+\
+docker-compose down, brings down all docker compose services/containers\
+\
+By default restart policy of docker compose is no, means don\'92t restart when crash\
+\
+Other restart policies restart on the basis of error codes, 0, 1, 2 etc. Generally 0 is for success and else are for error\
+\
+docker-compose ps, cmd to check the status to services in a docker compose yml, ensure to run this cmd where yml is present\
+\
+docker build -f Dockerfile.dev ., cmd to build a docker image by specifying the Dockerfile explicitly, generally used in testing between dev/prod env\
+\
+When building image for node applications, ensure to remove node_modules dir to ensure fast image building\
+\
+Docker volume enables one to avoid rebuilding image whenever changes are made in application source code such as ui in case of frontend, new api key stored in a file etc. Volume essentially maps location of the source inside docker image to the source location in host/local system\
+\
+docker run -p 3000:3000 -v \'93/app/node_modules\'94 -v $(pwd):/app/ <image-id>, this cmd links the working dir app of this particular image to current working directory in local system, -v /app/node_modules means mapping for this directory is disabled(remember deleting this folder in last 3rd step, since this folder is not present locally and we are referring it from within docker image so mapping for deleted and referenced folders within docker image need to be disabled)\
+\
+docker run -it <image/container-id> npm run test, running a test on node app\
+\
+docker attach <image/container-id>, attaches terminal to stdin, stdout and stderr of the primary process of the mentioned container\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 docker volume rm $(docker volume ls -qf dangling=true), this cmd when docker says no space
+\f0 \kerning1\expnd0\expndtw0 \outl0\strokewidth0 \
+}
